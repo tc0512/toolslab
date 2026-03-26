@@ -36,3 +36,17 @@ cpdef tuple find_nth(str s, str sub, int n): #第n+1次出现
             return (pos, pos + len(sub)) #区间=[start, end)
         count += 1
         start = pos + 1
+cpdef str replace_all(str s, str old, str new): #替换所有
+    return s.replace(old, new)
+cpdef str replace_first(str s, str old, str new): #替换第一个目标字符串
+    cdef int pos = s.find(old)
+    if pos == -1:
+        return s
+    return s[:pos] + new + s[pos + len(old):]
+cpdef str replace_last(str s, str old, str new): #替换最后一个目标字符串
+    cdef int pos = s.rfind(old)
+    if pos == -1:
+        return s
+    return s[:pos] + new + s[pos + len(old):]
+cpdef str erase_all(str s, str sub): #删除所有目标字符串
+    return s.replace(sub, '')
