@@ -50,3 +50,11 @@ cpdef str replace_last(str s, str old, str new): #替换最后一个目标字符
     return s[:pos] + new + s[pos + len(old):]
 cpdef str erase_all(str s, str sub): #删除所有目标字符串
     return s.replace(sub, '')
+cpdef str starts_with(str s, str prefix): #是否以...开头
+    length = len(prefix)
+    sub = s[:length]
+    return sub==prefix
+cpdef str ends_with(str s, str suffix): #是否以...结尾
+    length = len(suffix)
+    sub = s[-length:]
+    return sub==suffix
