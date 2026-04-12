@@ -1,4 +1,4 @@
-#/root/toolslab/toolslab/StringAlgo.pyx
+#toolslab/StringAlgo.pyx
 #cython: language_level=3
 import re
 cpdef str to_upper(str string): #小写转大写
