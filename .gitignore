@@ -1,0 +1,31 @@
+#Python cache
+*.pyc
+__pycache__/
+
+#Compile file
+*.so
+*.o
+*.c
+
+#Virtual environment
+.venv/
+venv/
+
+#IDE configuration
+.vscode/
+.idea/
+
+#System file
+.DS_Store
+Thumbs.db
+
+#Log and temporary file
+*.log
+*.tmp
+
+#Sensitive file
+.env
+config.local.py
+
+#Vim swap file
+*.swp
