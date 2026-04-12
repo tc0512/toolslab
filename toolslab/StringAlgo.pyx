@@ -69,10 +69,10 @@ cpdef bool is_num(str string): #是否为数字
         return False
 cpdef bool is_alpha(str string): #是否为字母
     return bool(re.fullmatch(r'[A-Za-z]+', string))
-cpdef bool is_punct(str s): #是否为标点
+cpdef bool is_punct(str string): #是否为标点
     return bool(re.fullmatch(r'[^\w\s]', string))
 cpdef bool is_any_of(str s1, str s2): #是否为其中一个
-    cpdef int i
+    cdef int i
     for i in range(len(s1)):
         if s1[i] in s2:
             return True
