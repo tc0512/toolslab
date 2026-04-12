@@ -61,19 +61,21 @@ cpdef bool ends_with(str s, str suffix): #是否以...结尾
     return sub==suffix
 cpdef bool equals(str str1, str str2): #是否相等
     return str1==str2
-cpdef bool is_num(str s): #是否为数字
+cpdef bool is_num(str string): #是否为数字
     try:
-        num = float(s)
+        num = float(string)
         return True
     except ValueError:
         return False
-cpdef bool is_alpha(str s): #是否为字母
-    return bool(re.fullmatch(r'[A-Za-z]+', s))
+cpdef bool is_alpha(str string): #是否为字母
+    return bool(re.fullmatch(r'[A-Za-z]+', string))
 cpdef bool is_punct(str s): #是否为标点
-    return bool(re.fullmatch(r'[^\w\s]', s))
+    return bool(re.fullmatch(r'[^\w\s]', string))
 cpdef bool is_any_of(str s1, str s2): #是否为其中一个
     cpdef int i
     for i in range(len(s1)):
         if s1[i] in s2:
             return True
     return False
+cpdef str to_upper_copy(str string):
+    return string.upper()
