@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0", "Cython>=3.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "toolslab"
+version = "0.1.0"
+description = "python程序员的工具箱"
+authors = [
+    {name = "tc0512", email = "tancheng_0812@qq.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ["Cython>=3.0"]
+
+[project.urls]
+Homepage = "https://github.com/tc0512/toolslab"
