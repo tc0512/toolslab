@@ -67,6 +67,9 @@ cpdef bool is_num(str string): #是否为数字
         return True
     except ValueError:
         return False
+cpdef bool icequals(str str1, str str2): #是否相等（大小写不敏感版本）
+    s1, s2 = str1.lower(), str2.lower()
+    return s1==s2
 cpdef bool is_alpha(str string): #是否为字母
     return bool(re.fullmatch(r'[A-Za-z]+', string))
 cpdef bool is_punct(str string): #是否为标点
