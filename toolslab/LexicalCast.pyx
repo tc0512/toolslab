@@ -13,6 +13,6 @@ cpdef bool lexical_cast_bool(str string): #字符串转布尔值
     s = string.lower()
     if s in ["true", "yes", "1", "on"]:
         return True
-    elif s in ["false", "no", "0", "off"]
+    elif s in ["false", "no", "0", "off"]:
         return False
     raise ValueError("cannot convert this string to bool")
