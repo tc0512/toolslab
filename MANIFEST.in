@@ -1,0 +1,2 @@
+include toolslab/*.pyx
+prune toolslab/*.c

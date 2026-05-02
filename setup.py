@@ -6,10 +6,9 @@ setup(
     version="0.1.0",
     description="python程序员的工具箱",
     author="tc0512",
-    author_email="tancheng_0812@qq.com",
+    author_email="xxxxxxxx@qq.com",
     license="MIT",
     packages=["toolslab"],
-    ext_modules=cythonize("toolslab/*.pyx"),
-    install_requires=[],
+    ext_modules=cythonize("toolslab/*.pyx"),   # 直接写 .pyx
     python_requires=">=3.8",
 )
