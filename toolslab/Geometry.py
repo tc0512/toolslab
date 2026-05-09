@@ -1,3 +1,4 @@
+import math
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -15,8 +16,8 @@ class LineString:
         self.points = points
     def length(self):
         total = 0
-        for i in range(len(points)-2):
-            total+=math.sqrt((points[i+1].x-points[i].x)**2+(points[i+1].y-points[i].y)**2)
+        for i in range(len(self.points)-1):
+            total+=math.sqrt((self.points[i+1].x-self.points[i].x)**2+(self.points[i+1].y-self.points[i].y)**2)
         return total
     def size(self):
-        return len(points)
+        return len(self.points)
