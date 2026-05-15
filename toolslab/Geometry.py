@@ -46,3 +46,27 @@ class Polygon:
             p2 = self.points[(i+1)%n]
             C+=math.sqrt((p2.x-p1.x)**2+(p2.y-p1.y)**2)
         return C
+class Box:
+    def __init__(self, ll, ur):
+        self.ll = ll
+        self.ur = ur
+    def min_corner(self):
+        return self.ll
+    def max_corner(self):
+        return self.ur
+    def within(self, p):
+        cond1 = (self.ll.x<=p.x and p.x<=self.ur.x)
+        cond2 = (self.ll.y<=p.y and p.y<=self.ur.y)
+        res = (cond1 and cond2)
+        return res
+    def width(self):
+        return self.ur.x-self.ll.x
+    def height(self):
+        return self.ur.y-self.ll.y
+    def perimeter(self):
+        return 2*(self.width+self.height)
+    def area(self)
+        return self.width*self.height
+    def expand(self, p):
+        if self.within(p):
+            raise ValueError("This point is in the box")
