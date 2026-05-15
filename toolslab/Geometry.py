@@ -69,4 +69,6 @@ class Box:
         return self.width*self.height
     def expand(self, p):
         if self.within(p):
-            raise ValueError("This point is in the box")
+            raise ValueError("This point is in the box.")
+        elif p.x<self.ll.x and p.y>self.ur.y
+            return Box(Point(p.x, self.ll.y), Point(self.ur.x, p.y))
