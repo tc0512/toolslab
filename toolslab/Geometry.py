@@ -70,5 +70,9 @@ class Box:
     def expand(self, p):
         if self.within(p):
             raise ValueError("This point is in the box.")
-        elif p.x<self.ll.x and p.y>self.ur.y
+        elif p.x<self.ll.x and p.y>self.ur.y:
             return Box(Point(p.x, self.ll.y), Point(self.ur.x, p.y))
+        elif self.ll.x<p.x and p.x<self.ur.y and p.y>self.ur.y:
+            return Box(self.ll, Point(self.ur.x, p.y))
+        elif p.x>self.ur.x and p.y>self.ur.y:
+            return Box(self.ll, p)
