@@ -76,3 +76,13 @@ class Box:
             return Box(self.ll, Point(self.ur.x, p.y))
         elif p.x>self.ur.x and p.y>self.ur.y:
             return Box(self.ll, p)
+        elif p.x<self.ll.x and self.ll.y<p.y and p.y<self.ur.y:
+            return Box(Point(p.x, self.ll.y), self.ur)
+        elif p.x>self.ll.x and self.ll.y<p.y and p.y<self.ur.y:
+            return Box(self.ll, Point(p.x, self.ur.y))
+        elif p.x<self.ll.x and p.y<self.ll.y:
+            return Box(p, self.ur)
+        elif self.ll.x<p.x and p.x<self.ur.x and p.y<self.ll.y:
+            return Box(Point(self.ll.x, p.y), self.ur)
+        elif self.ur.x<p.x and p.y<self.ll.y:
+            return Box(Point(self.ll.x, p.y), Point(p.x, self.ur.y))
