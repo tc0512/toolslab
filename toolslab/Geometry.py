@@ -3,8 +3,8 @@ class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-    def expression(self):
-        return f"({self.x}, {self.y})"
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
 class Line:
     def __init__(self, p1, p2):
         self.p1 = p1
@@ -50,6 +50,8 @@ class Box:
     def __init__(self, ll, ur):
         self.ll = ll
         self.ur = ur
+    def __repr__(self):
+        return f"Box({self.ll}, {self.ur})"
     def min_corner(self):
         return self.ll
     def max_corner(self):
@@ -64,9 +66,9 @@ class Box:
     def height(self):
         return self.ur.y-self.ll.y
     def perimeter(self):
-        return 2*(self.width+self.height)
-    def area(self)
-        return self.width*self.height
+        return 2*(self.width()+self.height())
+    def area(self):
+        return self.width()*self.height()
     def expand(self, p):
         if self.within(p):
             raise ValueError("This point is in the box.")
