@@ -1,16 +1,29 @@
 import math
-class Point:
+class Point: #点
     def __init__(self, x, y):
         self.x = x
         self.y = y
     def __repr__(self):
         return f"Point({self.x}, {self.y})"
-class Line:
+class Segment:
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
     def length(self, p1, p2):
         return math.sqrt((p2.x-p1.x)**2+(p2.y-p1.y)**2)
+class Line:
+    def __init__(self, p1, p2):
+        self.p1 = p1
+        self.p2 = p2
+    def slope(self):
+        if self.p1.x==self.p2.x:
+            return math.nan()
+        return (self.p2.y-self.p1.y)/(self.p2.x-self.p1.x)
+    def equation(self):
+        if self.p1.x==self.p2.x:
+            return f"x={self.p1.x}"
+        b = self.p1.y-self.slope()*self.p1.x
+        return [self.slope(), b]
 class LineString:
     def __init__(self, points):
         self.points = points
@@ -21,7 +34,7 @@ class LineString:
         return total
     def size(self):
         return len(self.points)
-class Polygon:
+class Polygon: #多边形
     def __init__(self, points):
         self.points = points
     def area(self):
@@ -46,7 +59,7 @@ class Polygon:
             p2 = self.points[(i+1)%n]
             C+=math.sqrt((p2.x-p1.x)**2+(p2.y-p1.y)**2)
         return C
-class Box:
+class Box: #矩形
     def __init__(self, ll, ur):
         self.ll = ll
         self.ur = ur
@@ -90,3 +103,19 @@ class Box:
             return Box(Point(self.ll.x, p.y), Point(p.x, self.ur.y))
         else:
             raise NotImplementedError("Don't implement this situation.")
+def _intersection_of_two_lines(l1, l2):
+    if isinstance(l1.equation(), str) and (l2.equation(), str):
+        return None
+    elif isinstance(l1.equation(), str):
+        x = l1.equation()[2:]
+        y = l2.slope()*x+l2.equation()[1]
+        return Point(x, y)
+    elif isinstance(l2.equation(), str):
+        x = l2.equation()[2:]
+        y = l1.slope()*x+l1.equation()[1]
+        return Point(x, y)
+    k1, b1 = l1.equation()
+    k2, b2 = l2.equation()
+    x = (b2-b1)/(k2-k1)
+    y = k1*x+b1
+    return Point(x, y)
