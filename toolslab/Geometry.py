@@ -1,17 +1,20 @@
 import math
+class Countless: #无数解类
+    def __repr__(selt):
+        return "Countless"
 class Point: #点
     def __init__(self, x, y):
         self.x = x
         self.y = y
     def __repr__(self):
         return f"Point({self.x}, {self.y})"
-class Segment:
+class Segment: #线段
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
     def length(self, p1, p2):
         return math.sqrt((p2.x-p1.x)**2+(p2.y-p1.y)**2)
-class Line:
+class Line: #直线
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
@@ -23,8 +26,8 @@ class Line:
         if self.p1.x==self.p2.x:
             return f"x={self.p1.x}"
         b = self.p1.y-self.slope()*self.p1.x
-        return [self.slope(), b]
-class LineString:
+        return f"y={self.slope()}x+{b}"
+class LineString: #折线
     def __init__(self, points):
         self.points = points
     def length(self):
@@ -103,19 +106,24 @@ class Box: #矩形
             return Box(Point(self.ll.x, p.y), Point(p.x, self.ur.y))
         else:
             raise NotImplementedError("Don't implement this situation.")
-def _intersection_of_two_lines(l1, l2):
-    if isinstance(l1.equation(), str) and (l2.equation(), str):
+def _intersection_of_two_lines(l1, l2): #Bug: 字符串未去首
+    if "x=" in l1.equation() and "x=" in l2.equation():
+        if l1.equation()[2:]==l2.equation()[2:]:
+            return Countless()
         return None
-    elif isinstance(l1.equation(), str):
-        x = l1.equation()[2:]
-        y = l2.slope()*x+l2.equation()[1]
+    elif "x=" in l1.equation() and "y=" in l2.equation():
+        x = float(l1.equation()[2:])
+        k, b = l2.equation()[2:].split("x+")
+        y = float(k)*x+float(b)
         return Point(x, y)
-    elif isinstance(l2.equation(), str):
-        x = l2.equation()[2:]
-        y = l1.slope()*x+l1.equation()[1]
+    elif "y=" in l1.equation() and "x=" in l2.equation():
+        x = float(l2.equation()[2:])
+        k, b = l1.equation()[2:].split("x+")
+        y = float(k)*x+float(b)
         return Point(x, y)
-    k1, b1 = l1.equation()
-    k2, b2 = l2.equation()
-    x = (b2-b1)/(k2-k1)
+    k1, b1 = l1.equation()[2:].split("x+")
+    k2, b2 = l2.equation()[2:].split("x+")
+    k1, b1, k2, b2 = float(k1), float(b1), float(k2), float(b2)
+    x = (b2-b1)/(k1-k2)
     y = k1*x+b1
     return Point(x, y)
