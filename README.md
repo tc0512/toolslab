@@ -4,7 +4,7 @@ python程序员的工具箱
 
 ## 安装
 ```bash
-pip install git+https://ghproxy.net/https://github.com/tc0512/toolslab.git #目前未发布
+pip install toolslab
 ```
 
 ## 快速开始
