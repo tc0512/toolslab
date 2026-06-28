@@ -8,12 +8,6 @@ class Point: #点
         self.y = y
     def __repr__(self):
         return f"Point({self.x}, {self.y})"
-class Segment: #线段
-    def __init__(self, p1, p2):
-        self.p1 = p1
-        self.p2 = p2
-    def length(self, p1, p2):
-        return math.sqrt((p2.x-p1.x)**2+(p2.y-p1.y)**2)
 class Line: #直线
     def __init__(self, p1, p2):
         self.p1 = p1
@@ -23,10 +17,22 @@ class Line: #直线
             return math.nan()
         return (self.p2.y-self.p1.y)/(self.p2.x-self.p1.x)
     def equation(self):
-        if self.p1.x==self.p2.x:
-            return f"x={self.p1.x}"
-        b = self.p1.y-self.slope()*self.p1.x
-        return f"y={self.slope()}x+{b}"
+        A = self.p1.y-self.p2.y
+        B = self.p2.x-self.p1.x
+        C = self.p1.x*self.p2.y-self.p2.x*self.p1.y
+        return [A, B, C]
+class Segment: #线段
+    def __init__(self, p1, p2):
+        self.p1 = p1
+        self.p2 = p2
+    def length(self, p1, p2):
+        return math.sqrt((p2.x-p1.x)**2+(p2.y-p1.y)**2)
+    def start(self):
+        return self.p1
+    def end(self):
+        return self.p2
+    def line(self):
+        return Line(self.p1, self.p2).equation()
 class LineString: #折线
     def __init__(self, points):
         self.points = points
@@ -106,24 +112,26 @@ class Box: #矩形
             return Box(Point(self.ll.x, p.y), Point(p.x, self.ur.y))
         else:
             raise NotImplementedError("Don't implement this situation.")
-def _intersection_of_two_lines(l1, l2): #Bug: 字符串未去首
-    if "x=" in l1.equation() and "x=" in l2.equation():
-        if l1.equation()[2:]==l2.equation()[2:]:
+def _intersection_of_two_lines(l1, l2): #private function: 两线交点
+    A1, B1, C1 = l1.equation()
+    A2, B2, C2 = l2.equation()
+    delta = A1*B2-A2*B1
+    if delta==0:
+        if A1*C2-A2*C1!=0 or B1*C2-B2*C1!=0:
+            return None
+        elif A1*C2-A2*C1==0 and B1*C2-B2*C1==0:
             return Countless()
-        return None
-    elif "x=" in l1.equation() and "y=" in l2.equation():
-        x = float(l1.equation()[2:])
-        k, b = l2.equation()[2:].split("x+")
-        y = float(k)*x+float(b)
-        return Point(x, y)
-    elif "y=" in l1.equation() and "x=" in l2.equation():
-        x = float(l2.equation()[2:])
-        k, b = l1.equation()[2:].split("x+")
-        y = float(k)*x+float(b)
-        return Point(x, y)
-    k1, b1 = l1.equation()[2:].split("x+")
-    k2, b2 = l2.equation()[2:].split("x+")
-    k1, b1, k2, b2 = float(k1), float(b1), float(k2), float(b2)
-    x = (b2-b1)/(k1-k2)
-    y = k1*x+b1
+    x, y = (B1*C2-B2*C1)/delta, (C1*A2-C2*A1)/delta
     return Point(x, y)
+def _is_on_segment(point, seg_p1, seg_p2): #private function：点是否在线段上
+    x, y = point.x, point.y
+    x1, y1 = seg_p1.x, seg_p1.y
+    x2, y2 = seg_p2.x, seg_p2.y
+    return (min(x1, x2)<=x<=max(x1, x2) and min(y1, y2)<=y<= max(y1, y2))
+def _intersection_of_line_and_seg(l, seg): #private function：直线与线段交点
+    point = _intersection_of_two_lines(line, segment.line)
+    if point is None or isinstance(point, Countless):
+        return point
+    if _is_on_segment(point, segment.p1, segment.p2):
+        return point
+    return None
