@@ -21,6 +21,8 @@ class Line: #直线
         B = self.p2.x-self.p1.x
         C = self.p1.x*self.p2.y-self.p2.x*self.p1.y
         return [A, B, C]
+    def directional_vector(self):
+        return (self.p2.x-self.p1.x, self.p2.y-self.p1.y)
 class Segment: #线段
     def __init__(self, p1, p2):
         self.p1 = p1
@@ -135,3 +137,34 @@ def _intersection_of_line_and_seg(l, seg): #private function：直线与线段�
     if _is_on_segment(point, segment.p1, segment.p2):
         return point
     return None
+def _intersection_of_line_and_polygon(l, poly): #private function：直线与多边形交点
+    a, b, c = l.equation()
+    if abs(b)>0:
+        O = Point(0, -c/b)
+    elif abs(a)>0:
+        O = Point(-c/a, 0)
+    else:
+        O = Point(0, 0)
+    D = l.directional_vector()
+    intersections = []
+    polygon = poly.points
+    n = len(polygon)
+    for i in range(n):
+        A = polygon[i]
+        B = polygon[(i+1)%n]
+        dx = B.x-A.x
+        dy = B.y-A.y
+        denom = D[0]*dy-D[1]*dx
+        if abs(denom)==0:
+            continue
+        t = ((A.x-O.x)*dy-(A.y-O.y)*dx)/denom
+        s = ((A.x-O.x)*D[1]-(A.y-O.y)*D[0])/denom
+        if 0 <= s <= 1:
+            x = O.x+t*D[0]
+            y = O.y+t*D[1]
+            intersections.append(Point(x, y))
+    unique = []
+    for p in intersections:
+        if not any(abs(p.x-q.x)==0 and abs(p.y-q.y)==0 for q in unique):
+            unique.append(p)
+    return unique
