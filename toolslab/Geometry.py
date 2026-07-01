@@ -168,3 +168,50 @@ def _intersection_of_line_and_polygon(l, poly): #private function：直线与多
         if not any(abs(p.x-q.x)==0 and abs(p.y-q.y)==0 for q in unique):
             unique.append(p)
     return unique
+def _intersection_of_seg_and_polygon(seg, poly): #private function: 线段与多边形交点
+    A_seg = seg.start()
+    B_seg = seg.end()
+    D = (B_seg.x-A_seg.x, B_seg.y-A_seg.y)
+    O = A_seg
+    intersections = []
+    polygon = poly.points
+    n = len(polygon)
+    for i in range(n):
+        A = polygon[i]
+        B = polygon[(i+1)%n]
+        dx = B.x-A.x
+        dy = B.y-A.y
+        denom = D[0]*dy-D[1]*dx
+        if abs(denom)==0:
+            continue
+        t = ((A.x-O.x)*dy-(A.y-O.y)*dx)/denom
+        s = ((A.x-O.x)*D[1]-(A.y-O.y)*D[0])/denom
+        if 0<=s<=1 and 0<=t<=1:
+            x = O.x+t*D[0]
+            y = O.y+t*D[1]
+            intersections.append(Point(x, y))
+    unique = []
+    for p in intersections:
+        if not any(abs(p.x-q.x)==0 and abs(p.y-q.y)==0 for q in unique):
+            unique.append(p)
+    return unique
+def intersection(a, b): #交点
+    # 两条直线
+    if isinstance(a, Line) and isinstance(b, Line):
+        return _intersection_of_two_lines(a, b)
+    # 直线和线段
+    if isinstance(a, Line) and isinstance(b, Segment):
+        return _intersection_of_line_and_seg(a, b)
+    if isinstance(a, Segment) and isinstance(b, Line):
+        return _intersection_of_line_and_seg(b, a)
+    # 直线和多边形
+    if isinstance(a, Line) and isinstance(b, Polygon):
+        return _intersection_of_line_and_polygon(a, b)
+    if isinstance(a, Polygon) and isinstance(b, Line):
+        return _intersection_of_line_and_polygon(b, a)
+    # 线段和多边形
+    if isinstance(a, Segment) and instance(b, Polygon):
+        return _intersection_of_seg_and_polygon(a, b)
+    if isinstance(a, Polygon) and instance(b, Segment):
+        return _intersection_of_seg_and_polygon(b, a)
+    raise NotImplementedError("Sorry, we donot support this situation.")
